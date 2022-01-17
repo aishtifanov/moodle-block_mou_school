@@ -1,0 +1,315 @@
+<?php // $Id: pupilcardedit.html,v 1.6 2012/02/10 08:50:28 shtifanov Exp $
+   
+   if (empty($user->pol)) {
+        $user->pol = 1;
+   }     
+
+   if (!isset($user->birthday)) {
+        $user->birthday = date("Y-m-d");
+   }     
+   
+   if (!isset($user->htmleditor)) {
+       $user->htmleditor = 1;
+   }
+   if (!isset($user->picture)) {
+       $user->picture = NULL;
+   }
+   if (empty($user->lang)) {
+       $user->lang = $CFG->lang;
+   }
+   if (!isset($user->theme)) {
+       $user->theme = '';
+   }
+   if (!isset($user->trackforums)) {
+       $user->trackforums = 0;
+   }
+   if (!isset($user->secondname)) {
+   	  if (isset($user->firstname) && !empty($user->firstname)) {
+		   $arr_f_s = explode(' ', $user->firstname); // list($f,$s) = explode(' ', $user->firstname);
+      	   $user->firstname = $arr_f_s[0];
+      	   $user->secondname = $arr_f_s[1];
+		   
+		   $cntname = count($arr_f_s);
+		   if ($cntname > 2)	{
+           		for ($i = 2; $i < $cntname; $i++)	{
+           			$user->secondname .= ' ' . $arr_f_s[$i];
+           		}
+           }	
+       } else {
+           $user->secondname = '';
+       }
+   }
+
+   if (!isset($user->city)) {
+       $user->city = get_string('belgorod', 'block_monitoring');
+   }
+
+   $user->country = 'RU';
+   $user->auth = 'manual';
+
+   echo '<div align=right><small><b>'. get_string('attentionform', 'block_monitoring') . '</b></small> <font color="red">*</font><br>';
+   echo '<small><b>'. get_string('attentionformznakminus', 'block_mou_att') . '</b></small></div>';
+?>
+
+<form method="post" name="form" enctype="multipart/form-data" action="pupilcard.php">
+<table class="formtable">
+<input type="hidden" name="mode" value="<?php echo $mode ?>" />
+<input type="hidden" name="rid" value="<?php echo $rid ?>" />
+<input type="hidden" name="sid" value="<?php echo $sid ?>" />
+<input type="hidden" name="yid" value="<?php echo $yid ?>" />
+<input type="hidden" name="gid" value="<?php echo $gid ?>" />
+<input type="hidden" name="uid" value="<?php echo $uid ?>" />
+
+
+<?php
+    if (!empty($CFG->gdversion) and empty($CFG->disableuserimages)) {
+?>
+<tr>
+    <th><?php print_string('currentfoto', 'block_mou_att') ?>:</th>
+    <td>
+       <?php print_user_picture($user->id, 1, $user->picture, false, false, false);
+             if ($user->picture) {
+                 echo '&nbsp;&nbsp;<input type="checkbox" name="deletepicture" alt="'.get_string("delete").'" value="1" />';
+                 print_string("delete");
+             }
+       ?>
+    </td>
+</tr>
+<tr>
+    <th><?php print_string("newpicture");  helpbutton("picture", get_string("helppicture")); ?>:</th>
+    <td>
+    <?php
+       require_once($CFG->dirroot.'/lib/uploadlib.php');
+       upload_print_form_fragment(1,array('imagefile'),null,false,null,0,0,false);
+       if (isset($err["imagefile"])) formerr($err["imagefile"]);
+    ?>
+    </td>
+</tr>
+<?php } else if (empty($CFG->gdversion) and isadmin()) {  ?>
+<tr>
+    <th><?php print_string("newpicture") ?>:</th>
+    <td>
+    <?php
+        echo "<a href=\"$CFG->wwwroot/$CFG->admin/config.php\">";
+        print_string('gdnot');
+        echo "</a>";
+    ?>
+    </td>
+</tr>
+<?php }
+   echo '<tr><td colspan="2"><hr /></td></tr>';
+?>
+
+<tr>
+    <th><?php print_string("lastname") ?><font color="red">*</font>:</th>
+    <td>
+    <input type="text" name="lastname" size="30" alt="<?php print_string("lastname") ?>" maxlength="20" value="<?php p($user->lastname) ?>" />
+    <?php if (isset($err["lastname"])) formerr($err["lastname"]); ?>
+    </td>
+</tr>
+<tr>
+    <th><?php print_string("firstname") ?><font color="red">*</font>:</th>
+    <td>
+    <input type="text" name="firstname" size="30" alt="<?php print_string("firstname") ?>" maxlength="20" value="<?php p($user->firstname) ?>" />
+    <?php if (isset($err["firstname"])) formerr($err["firstname"]); ?>
+    </td>
+</tr>
+<tr>
+    <th><?php print_string('secondname', 'block_monitoring') ?><font color="red">*</font>:</th>
+    <td>
+    <input type="text" name="secondname" size="30" alt="<?php print_string('secondname', 'block_monitoring') ?>" maxlength="20" value="<?php p($user->secondname) ?>" />
+    <?php if (isset($err["secondname"])) formerr($err["secondname"]); ?>
+    </td>
+</tr>
+
+<?php
+        //print_r($profile);
+
+		$i = 0;
+		foreach ($profile->fields as $pf)  {
+		    $printstr = get_string($pf, 'block_mou_school');
+            /*
+		    if ($pf == 'pol' && empty($user->{$pf}))  {
+		    	$user->{$pf} = 1;
+		    }
+		    if ($pf == 'birthday' && $user->{$pf} == 0)  {
+		    	$user->{$pf} = date("Y-m-d");
+		    }
+            */
+			if (!empty($user->{$pf}))  {
+			    $printval = $user->{$pf};
+				switch ($profile->type[$i]) {
+					case 'date':
+					    if (!is_date($user->{$pf})) {
+						    $printval = convert_date($user->{$pf}, 'en', 'ru');
+						}
+					break;
+					case 'bool':
+				       if ($printval == 1)  {
+				   		    $strbool  = '<strong><font color="green">';
+							$strbool .= '<input type=radio name=pol value=1 checked="checked" />';
+							$strbool .= get_string('pol1', 'block_mou_school');
+			    		    $strbool .= "</font></strong>";
+							$strbool .= '<input type=radio name=pol value=2 />';
+							$strbool .= get_string('pol2', 'block_mou_school');
+			           } else {
+							$strbool  = '<input type=radio name=pol value=1 />';
+							$strbool .= get_string('pol1', 'block_mou_school');
+				   		    $strbool .= '<strong><font color="green">';
+							$strbool .= '<input type=radio name=pol value=2 checked="checked"  />';
+							$strbool .= get_string('pol2', 'block_mou_school');
+			    		    $strbool .= "</font></strong>";
+			           }
+					break;
+				}
+			} else {
+				$strbool  = '?';
+				if (in_array($pf, $profile->numericfield)) {
+					$printval = '0';
+				} else {
+					$printval = '-';
+				}
+			}
+
+			switch ($profile->type[$i]) {
+				case 'text':
+				    $size = 100;
+				    $maxlenth = 255;
+				break;
+				case 'str':
+				    $size = 100;
+				    $maxlenth = 100;
+				break;
+				case 'real':
+				    $size = 6;
+				    $maxlenth = 6;
+				break;
+				case 'int':
+				    $size = 7;
+				    $maxlenth = 7;
+				break;
+				case 'date':
+				    $size = 10;
+				    $maxlenth = 10;
+				break;
+			}
+
+	    	// print_row($printstr . ':', $printval);
+			echo "<tr><th>$printstr:</th>";
+			if ($profile->type[$i] == 'bool') {
+				echo "<td> $strbool </td>";
+			}	else {
+				echo "<td><input type=text name=$pf size=$size alt=\"$printstr\" maxlength=$maxlenth ";
+				echo "value=\"";
+				p ($printval);
+				echo "\" />";
+			    if (isset($err[$pf])) formerr($err[$pf]);
+				echo '</td></tr>';
+			}
+
+			$i++;
+		}
+   echo '<tr><td colspan="2"><hr /></td></tr>';
+
+
+// if (isadmin()) {
+// if ($admin_is || $region_operator_is || $rayon_operator_is || $school_operator_is) {
+   if ($edit_capability || $edit_capability_class)	{
+
+    $theadmin = get_admin();
+    // print_r($theadmin);
+    $adminself = (($theadmin->id == $USER->id) and ($USER->id == $user->id));
+    echo '<tr>';
+    // if ($adminself) { // || is_internal_auth($user->auth) ){
+	if (isadmin()) {
+        echo '<th>'.get_string('username').'<font color="red">*</font>:</th>';
+        echo "<td><input type=\"text\" name=\"username\" size=\"30\" alt=\"".get_string("username")."\" value=\"";
+        p($user->username);
+        echo "\" />";
+        if (isset($err["username"])) formerr($err["username"]);
+    } else {
+	    echo '<th>'.get_string('username').':</th>';
+        echo "<td>";
+        p($user->username);
+        echo "<input type=\"hidden\" name=\"username\" value=\"";
+        p($user->username);
+        echo "\" />";
+    }
+    echo "</td>";
+    echo "</tr>\n";
+
+    if ($adminself || is_internal_auth($user->auth) || (!empty($CFG->{'auth_'.$user->auth.'_stdchangepassword'}))) {
+        echo '<tr>';
+        echo '<th>'.get_string('newpassword').':</th>';
+        echo "<td><input type=\"text\" name=\"newpassword\" size=\"30\" alt=\"".get_string("newpassword")."\" value=\"";
+        if (isset($user->newpassword)) {
+            p($user->newpassword);
+        }
+        echo "\" />";
+        if (isset($err["newpassword"])) {
+            formerr($err["newpassword"]);
+        } else if (empty($user->newpassword)) {
+            echo "<small>(".get_string("leavetokeep").")</small>";
+        }
+        echo "</td>";
+        echo "</tr>\n";
+        if (!$adminself && (!empty($CFG->{'auth_'.$user->auth.'_stdchangepassword'}) || $CFG->changepassword)){
+             if (get_user_preferences('auth_forcepasswordchange', NULL, $user->id)) {
+                 $checked = ' checked="checked" ';
+             } else {
+                 $checked = '';
+             }
+             echo '<tr>';
+             echo '<th>'.get_string('forcepasswordchange').':</th>';
+             echo '<td><input type="checkbox" name="forcepasswordchange" alt="'.get_string('forcepasswordchange').'" '.$checked.' /> '.get_string('forcepasswordchangehelp').'</td>';
+             echo '</tr>';
+        }
+    }
+}
+
+?>
+
+<tr><td colspan="2"><hr /></td></tr>
+<tr>
+    <th><?php print_string("city") ?><font color="red">*</font>:</th>
+    <td>
+    <input type="text" name="city" size="100" alt="<?php print_string("city") ?>" maxlength="250" value="<?php p($user->city) ?>" />
+    <?php if (isset($err["city"])) formerr($err["city"]); ?>
+    </td>
+</tr>
+<tr>
+    <th>E-mail<font color="red">*</font>:</th>
+    <td>
+    <input type="text" name="email" size="30" alt="<?php print_string("email") ?>" maxlength="100" value="<?php p($user->email) ?>" />
+    <?php if (isset($err["email"])) formerr($err["email"]); ?>
+    </td>
+</tr>
+<tr>
+    <th><?php print_string('mobilephone', 'block_monitoring') ?>:</th>
+    <td>
+    <input type="text" name="phone2" size="25" alt="<?php print_string("phone") ?>" maxlength="20" value="<?php p($user->phone2) ?>" />
+    <?php if (isset($err["phone2"])) formerr($err["phone2"]); ?>
+    </td>
+</tr>
+<tr>
+    <th><?php print_string("userdescription") ?>:</th>
+    <td><?php
+        if (isset($err["description"])) {
+            formerr($err["description"]);
+            echo "<br />";
+        }
+        print_textarea(false, 3, 80, 80, 3, 'description', "$user->description");
+        helpbutton("text", get_string("helptext"));
+    ?>
+    </td>
+</tr>
+
+<?php  if (!isregionviewoperator() && !israyonviewoperator())  {  ?>
+<tr>
+    <td colspan="2" style="text-align: center;"><input type="submit" value="<?php print_string("updatemyprofile") ?>" /></td>
+</tr>
+<?php  }  ?>
+
+</table>
+<input type="hidden" name="id" value="<?php p($user->id) ?>" />
+</form>

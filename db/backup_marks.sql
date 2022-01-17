@@ -1,0 +1,68 @@
+# Резервное копирование прошлогодних оценок в базу mou_archive
+
+CREATE DATABASE IF NOT EXISTS mou_archive;
+
+CREATE TABLE mou_archive.mdl_monit_school_assignments_4 LIKE mou.mdl_monit_school_assignments; 
+INSERT INTO mou_archive.mdl_monit_school_assignments_4 SELECT * FROM mou.mdl_monit_school_assignments; 
+
+# CREATE TABLE mou_archive.mdl_monit_school_attendance_4 LIKE mou.mdl_monit_school_attendance; 
+# INSERT INTO mou_archive.mdl_monit_school_attendance_4 SELECT * FROM mou.mdl_monit_school_attendance; 
+
+CREATE TABLE mou_archive.mdl_monit_school_class_discipline_4 LIKE mou.mdl_monit_school_class_discipline; 
+INSERT INTO mou_archive.mdl_monit_school_class_discipline_4 SELECT * FROM mou.mdl_monit_school_class_discipline; 
+CREATE TABLE mou_archive.mdl_monit_school_class_schedule_4 LIKE mou.mdl_monit_school_class_schedule; 
+INSERT INTO mou_archive.mdl_monit_school_class_schedule_4 SELECT * FROM mou.mdl_monit_school_class_schedule; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_totals_term_4 LIKE mou.mdl_monit_school_marks_totals_term; 
+INSERT INTO mou_archive.mdl_monit_school_marks_totals_term_4 SELECT * FROM mou.mdl_monit_school_marks_totals_term; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_totals_year_4 LIKE mou.mdl_monit_school_marks_totals_year; 
+INSERT INTO mou_archive.mdl_monit_school_marks_totals_year_4 SELECT * FROM mou.mdl_monit_school_marks_totals_year; 
+CREATE TABLE mou_archive.mdl_monit_school_subgroup_pupil_4 LIKE mou.mdl_monit_school_subgroup_pupil; 
+INSERT INTO mou_archive.mdl_monit_school_subgroup_pupil_4 SELECT * FROM mou.mdl_monit_school_subgroup_pupil; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_1_4 LIKE mou.mdl_monit_school_marks_1; 
+INSERT INTO mou_archive.mdl_monit_school_marks_1_4 SELECT * FROM mou.mdl_monit_school_marks_1; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_2_4 LIKE mou.mdl_monit_school_marks_2; 
+INSERT INTO mou_archive.mdl_monit_school_marks_2_4 SELECT * FROM mou.mdl_monit_school_marks_2; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_3_4 LIKE mou.mdl_monit_school_marks_3; 
+INSERT INTO mou_archive.mdl_monit_school_marks_3_4 SELECT * FROM mou.mdl_monit_school_marks_3; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_4_4 LIKE mou.mdl_monit_school_marks_4; 
+INSERT INTO mou_archive.mdl_monit_school_marks_4_4 SELECT * FROM mou.mdl_monit_school_marks_4; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_5_4 LIKE mou.mdl_monit_school_marks_5; 
+INSERT INTO mou_archive.mdl_monit_school_marks_5_4 SELECT * FROM mou.mdl_monit_school_marks_5; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_6_4 LIKE mou.mdl_monit_school_marks_6; 
+INSERT INTO mou_archive.mdl_monit_school_marks_6_4 SELECT * FROM mou.mdl_monit_school_marks_6; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_7_4 LIKE mou.mdl_monit_school_marks_7; 
+INSERT INTO mou_archive.mdl_monit_school_marks_7_4 SELECT * FROM mou.mdl_monit_school_marks_7; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_8_4 LIKE mou.mdl_monit_school_marks_8; 
+INSERT INTO mou_archive.mdl_monit_school_marks_8_4 SELECT * FROM mou.mdl_monit_school_marks_8; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_9_4 LIKE mou.mdl_monit_school_marks_9; 
+INSERT INTO mou_archive.mdl_monit_school_marks_9_4 SELECT * FROM mou.mdl_monit_school_marks_9; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_10_4 LIKE mou.mdl_monit_school_marks_10; 
+INSERT INTO mou_archive.mdl_monit_school_marks_10_4 SELECT * FROM mou.mdl_monit_school_marks_10; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_11_4 LIKE mou.mdl_monit_school_marks_11; 
+INSERT INTO mou_archive.mdl_monit_school_marks_11_4 SELECT * FROM mou.mdl_monit_school_marks_11; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_12_4 LIKE mou.mdl_monit_school_marks_12; 
+INSERT INTO mou_archive.mdl_monit_school_marks_12_4 SELECT * FROM mou.mdl_monit_school_marks_12; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_13_4 LIKE mou.mdl_monit_school_marks_13; 
+INSERT INTO mou_archive.mdl_monit_school_marks_13_4 SELECT * FROM mou.mdl_monit_school_marks_13; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_14_4 LIKE mou.mdl_monit_school_marks_14; 
+INSERT INTO mou_archive.mdl_monit_school_marks_14_4 SELECT * FROM mou.mdl_monit_school_marks_14; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_15_4 LIKE mou.mdl_monit_school_marks_15; 
+INSERT INTO mou_archive.mdl_monit_school_marks_15_4 SELECT * FROM mou.mdl_monit_school_marks_15; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_16_4 LIKE mou.mdl_monit_school_marks_16; 
+INSERT INTO mou_archive.mdl_monit_school_marks_16_4 SELECT * FROM mou.mdl_monit_school_marks_16; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_17_4 LIKE mou.mdl_monit_school_marks_17; 
+INSERT INTO mou_archive.mdl_monit_school_marks_17_4 SELECT * FROM mou.mdl_monit_school_marks_17; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_18_4 LIKE mou.mdl_monit_school_marks_18; 
+INSERT INTO mou_archive.mdl_monit_school_marks_18_4 SELECT * FROM mou.mdl_monit_school_marks_18; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_19_4 LIKE mou.mdl_monit_school_marks_19; 
+INSERT INTO mou_archive.mdl_monit_school_marks_19_4 SELECT * FROM mou.mdl_monit_school_marks_19; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_20_4 LIKE mou.mdl_monit_school_marks_20; 
+INSERT INTO mou_archive.mdl_monit_school_marks_20_4 SELECT * FROM mou.mdl_monit_school_marks_20; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_21_4 LIKE mou.mdl_monit_school_marks_21; 
+INSERT INTO mou_archive.mdl_monit_school_marks_21_4 SELECT * FROM mou.mdl_monit_school_marks_21; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_22_4 LIKE mou.mdl_monit_school_marks_22; 
+INSERT INTO mou_archive.mdl_monit_school_marks_22_4 SELECT * FROM mou.mdl_monit_school_marks_22; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_23_4 LIKE mou.mdl_monit_school_marks_23; 
+INSERT INTO mou_archive.mdl_monit_school_marks_23_4 SELECT * FROM mou.mdl_monit_school_marks_23; 
+CREATE TABLE mou_archive.mdl_monit_school_marks_25_4 LIKE mou.mdl_monit_school_marks_25; 
+INSERT INTO mou_archive.mdl_monit_school_marks_25_4 SELECT * FROM mou.mdl_monit_school_marks_25;
